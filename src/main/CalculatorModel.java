@@ -4,6 +4,7 @@ public class CalculatorModel {
 	public void main(String[] args) {
 		
 		int mb;
+		int a ;
 		
 	}
 	
