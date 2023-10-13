@@ -9,7 +9,6 @@ public class mainClass {
         int nombre1 = 0;
         int nombre2 = 0;
 
-        model.add(nombre1, nombre2);
-        // buffer for output
+       
     }
 }

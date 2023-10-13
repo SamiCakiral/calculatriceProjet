@@ -3,46 +3,67 @@ import java.util.Stack ;
 
 public class CalculatorModel implements CalculatorModelInterface{
 
+    private String accu = "" ;
+	private Stack<Integer> pile = new Stack<Integer>() ;
+
 
 	@Override
-	public int add(int nombre1, int nombre2) {
-		return nombre1 + nombre2;
+	public void add() {
+		int nombre1 = pile.pop();
+		int nombre2 = pile.pop();
+		pile.add(nombre1 + nombre2);
+			
 	}
 	@Override
-	public int sub(int nombre1, int nombre2) {
-		return nombre1 - nombre2;
+	public void sub() {
+		int nombre1 = pile.pop();
+		int nombre2 = pile.pop();
+		pile.add(nombre1 - nombre2);
+		
 	}
 	@Override
-	public int multiply(int nombre1, int nombre2) {
-		return nombre1*nombre2 ;
+	public void multiply() {
+		int nombre1 = pile.pop();
+		int nombre2 = pile.pop();
+		pile.add(nombre1*nombre2);
 	}
 	@Override
-	public int divide(int nombre1, int nombre2) {
-		return nombre1/nombre2 ;
+	public void divide() {
+		int nombre1 = pile.pop();
+		int nombre2 = pile.pop();
+		pile.add(nombre1/nombre2);
 	}
 	@Override
-	public int opposite(int nombre1) {
-		return - nombre1;
+	public void opposite() {
+		int nombre1 = pile.pop();
+		pile.add( - nombre1);
 	}
 	@Override
-	public void push(String element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'push'");
+	public void push() {
+		pile.push(Integer.parseInt(accu));
+		accu = ""; // On vide l'accu
 	}
 	@Override
-	public String pop() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'pop'");
+	public int pop() {
+		return pile.pop() ;
 	}
 	@Override
 	public void drop() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'drop'");
+		pile.pop();
 	}
 	@Override
 	public void swap() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'swap'");
+
+		int a = pile.elementAt(0) ;
+		pile.pop();
+		int b = pile.elementAt(0) ;
+		pile.pop();
+		pile.add(a);
+		pile.add(b);
+	}
+
+	public void clear() {
+		pile.clear();
 	}
 	
 
