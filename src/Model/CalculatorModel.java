@@ -1,6 +1,8 @@
 package Model;
+import java.util.Stack ;
 
 public class CalculatorModel implements CalculatorModelInterface{
+
 
 	@Override
 	public int add(int nombre1, int nombre2) {
@@ -12,18 +14,15 @@ public class CalculatorModel implements CalculatorModelInterface{
 	}
 	@Override
 	public int multiply(int nombre1, int nombre2) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'multiply'");
+		return nombre1*nombre2 ;
 	}
 	@Override
 	public int divide(int nombre1, int nombre2) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'divide'");
+		return nombre1/nombre2 ;
 	}
 	@Override
 	public int opposite(int nombre1) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'opposite'");
+		return - nombre1;
 	}
 	@Override
 	public void push(String element) {
