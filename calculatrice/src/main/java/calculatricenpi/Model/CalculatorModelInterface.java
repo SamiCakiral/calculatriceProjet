@@ -1,4 +1,4 @@
-package Model;
+package calculatricenpi.Model;
 
 public interface CalculatorModelInterface {
 
@@ -13,5 +13,4 @@ public interface CalculatorModelInterface {
     public void swap();
 
 
-    
 }

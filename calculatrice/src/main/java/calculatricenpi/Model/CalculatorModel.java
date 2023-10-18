@@ -1,4 +1,4 @@
-package Model;
+package calculatricenpi.Model;
 import java.util.Stack ;
 
 public class CalculatorModel implements CalculatorModelInterface{
@@ -6,6 +6,9 @@ public class CalculatorModel implements CalculatorModelInterface{
     private String accu = "" ;
 	private Stack<Integer> pile = new Stack<Integer>() ;
 
+	public void setAccu(String accu) {
+		this.accu +=accu;
+	}
 
 	@Override
 	public void add() {
