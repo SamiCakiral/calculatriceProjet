@@ -1,8 +1,9 @@
-package calculatricenpi.main;
+package calculatricenpi.Controler;
 
 import calculatricenpi.Model.CalculatorModel;
 
-public class mainClass {
+
+public class Controler implements ControlerInterface {
 
     public static void main(String[] args) {
         CalculatorModel model = new CalculatorModel();
@@ -25,4 +26,15 @@ public class mainClass {
         System.out.println(model.pop());
         
     }
+
+    @Override
+    public void change(String accu) {
+        
+    }
+
+    @Override
+    public void change(double[] stackData) {
+        
+    }
+    
 }

@@ -69,7 +69,7 @@ public class CalculatorGUI extends Application {
         for (int i = 0; i < 5; i++) {
             listButtonSignes[i] = new Button(signes[i]);
         }
-    
+        
         // Créer la grille pour les chiffres
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(10, 10, 10, 10));
@@ -118,7 +118,7 @@ public class CalculatorGUI extends Application {
     }
     
 
-    public static void main(String[] args) {
+    public  void startGui(String[] args) {
         launch(args);
     }
 }
