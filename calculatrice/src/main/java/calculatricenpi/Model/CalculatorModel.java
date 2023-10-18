@@ -4,50 +4,53 @@ import java.util.Stack ;
 public class CalculatorModel implements CalculatorModelInterface{
 
     private String accu = "" ;
-	private Stack<Integer> pile = new Stack<Integer>() ;
+	private Stack<Double> pile = new Stack<Double>() ;
 
 	public void setAccu(String accu) {
 		this.accu +=accu;
 	}
+	public String getAccu() {
+		return accu;
+	}
 
 	@Override
 	public void add() {
-		int nombre1 = pile.pop();
-		int nombre2 = pile.pop();
+		double nombre1 = pile.pop();
+		double nombre2 = pile.pop();
 		pile.add(nombre1 + nombre2);
 			
 	}
 	@Override
 	public void sub() {
-		int nombre1 = pile.pop();
-		int nombre2 = pile.pop();
+		double nombre1 = pile.pop();
+		double nombre2 = pile.pop();
 		pile.add(nombre1 - nombre2);
 		
 	}
 	@Override
 	public void multiply() {
-		int nombre1 = pile.pop();
-		int nombre2 = pile.pop();
+		double nombre1 = pile.pop();
+		double nombre2 = pile.pop();
 		pile.add(nombre1*nombre2);
 	}
 	@Override
 	public void divide() {
-		int nombre1 = pile.pop();
-		int nombre2 = pile.pop();
+		double nombre1 = pile.pop();
+		double nombre2 = pile.pop();
 		pile.add(nombre1/nombre2);
 	}
 	@Override
 	public void opposite() {
-		int nombre1 = pile.pop();
+		double nombre1 = pile.pop();
 		pile.add( - nombre1);
 	}
 	@Override
 	public void push() {
-		pile.push(Integer.parseInt(accu));
+		pile.push(Double.parseDouble(accu));
 		accu = ""; // On vide l'accu
 	}
 	@Override
-	public int pop() {
+	public double pop() {
 		return pile.pop() ;
 	}
 	@Override
@@ -57,9 +60,9 @@ public class CalculatorModel implements CalculatorModelInterface{
 	@Override
 	public void swap() {
 
-		int a = pile.elementAt(0) ;
+		double a = pile.elementAt(0) ;
 		pile.pop();
-		int b = pile.elementAt(0) ;
+		double b = pile.elementAt(0) ;
 		pile.pop();
 		pile.add(a);
 		pile.add(b);

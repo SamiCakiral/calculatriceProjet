@@ -3,12 +3,12 @@ package calculatricenpi.View;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-public class CalculatorGUI extends Application {
+
+public class CalculatorGUI extends Application implements CalculatorGUIInterface {
 
     @Override
     public void start(Stage primaryStage) {
@@ -20,8 +20,8 @@ public class CalculatorGUI extends Application {
         for (int i = 0; i <= 9; i++) { // Seulement 10 boutons pour les chiffres 0-9
             listButtonChiffres[i] = new Button(String.valueOf(i));
         }
-        listButtonChiffres[10] = new Button("."); // Pour la virgule décimale
-        listButtonChiffres[11] = new Button("C"); // Pour la remise à zéro
+        listButtonChiffres[10] = new Button(","); // Pour la virgule décimale
+        listButtonChiffres[11] = new Button("+/-"); // +/-
     
         // Initialiser les boutons des signes
         Button[] listButtonSignes = new Button[5];
@@ -29,7 +29,7 @@ public class CalculatorGUI extends Application {
         for (int i = 0; i < 5; i++) {
             listButtonSignes[i] = new Button(signes[i]);
         }
-    
+        
         // Créer la grille pour les chiffres
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(10, 10, 10, 10));
@@ -60,7 +60,28 @@ public class CalculatorGUI extends Application {
     }
     
 
-    public static void main(String[] args) {
+    public  void startGui(String[] args) {
         launch(args);
+    }
+
+
+    @Override
+    public void affiche() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'affiche'");
+    }
+
+
+    @Override
+    public void change(String accu) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'change'");
+    }
+
+
+    @Override
+    public void change(double[] stackData) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'change'");
     }
 }
