@@ -11,7 +11,7 @@ public class mainClass {
         int nombre12 = 2;
         int nombre2 = 3;
         String op = "-";
-
+        
         model.setAccu(String.valueOf(nombre11));
         model.setAccu(String.valueOf(nombre12));
         model.push();
