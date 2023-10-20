@@ -1,6 +1,7 @@
 package calculatricenpi.View;
 
 import javafx.application.Application;
+import javafx.geometry.Pos ;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,28 +20,37 @@ public class CalculatorGUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Conteneur principal
-        VBox fenetre = new VBox();
-        VBox vboxResultat = new VBox();
+        VBox fenetre = new VBox(); // VBox principale qui va representer la fenêtre et qui va contenir la HBox et la VBox
+        fenetre.setStyle("-fx-background-color: gray;");
+        VBox vboxResultat = new VBox(); // VBox qui va contenir les 5 HBox qui affichent les résulats
         Label label = new Label("52");
         Label label1 = new Label("40");
-        BorderPane borderPane1 = new BorderPane(label);
+        Label label2 = new Label("700");
+        Label label3 = new Label("800");
+        Label label4 = new Label("900");
+        HBox hbox1 = new HBox(label);
+        hbox1.setAlignment(Pos.CENTER_RIGHT);
+        hbox1.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
         HBox hbox2 = new HBox(label1);
-        HBox hbox3 = new HBox(label);
-        HBox hbox4 = new HBox(label);
-        HBox hbox5 = new HBox(label);
-        HBox hboxBas = new HBox();
+        hbox2.setAlignment(Pos.CENTER_RIGHT);
+        hbox2.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
+        HBox hbox3 = new HBox(label2);
+        hbox3.setAlignment(Pos.CENTER_RIGHT);
+        hbox3.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
+        HBox hbox4 = new HBox(label3);
+        hbox4.setAlignment(Pos.CENTER_RIGHT);
+        hbox4.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
+        HBox hbox5 = new HBox(label4);
+        hbox5.setAlignment(Pos.CENTER_RIGHT);
+        hbox5.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
 
-        for (int i = 1; i <= 5; i++) {
-            Rectangle rectangle = new Rectangle(700, 20);
-            rectangle.setFill(Color.LIGHTBLUE);
+        HBox hboxBas = new HBox(); // HBox qui contient la GridPane de Button et la VBox des opérateurs
 
-            Label label3 = new Label("Rectangle " + i);
-            label3.setStyle("-fx-background-color: transparent;");;
+       
 
-            vboxResultat.getChildren().addAll(rectangle, label3);}
 
-        
-        //vboxResultat.getChildren().addAll(borderPane1,hbox2,hbox3,hbox4, hbox5);
+        vboxResultat.setSpacing(3);
+        vboxResultat.getChildren().addAll(hbox1,hbox2,hbox3,hbox4, hbox5);
     
         // Initialiser les boutons des chiffres
         Button[] listButtonChiffres = new Button[12];
@@ -50,6 +60,8 @@ public class CalculatorGUI extends Application {
         
         listButtonChiffres[10] = new Button(","); // Pour la virgule décimale
         listButtonChiffres[11] = new Button("+/-"); // Pour la remise à zéro
+        listButtonChiffres[11].setStyle("-fx-background-color :gray ; -fx-border-color : black ; -fx-border-width : 1px;");
+        
     
         // Initialiser les boutons des signes
         Button[] listButtonSignes = new Button[5];
@@ -61,8 +73,9 @@ public class CalculatorGUI extends Application {
         // Créer la grille pour les chiffres
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(10, 10, 10, 10));
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
+        gridPane.setHgap(5);
+        gridPane.setVgap(5);
+       
         int buttonIndex = 0;
 
 
@@ -84,18 +97,20 @@ public class CalculatorGUI extends Application {
         
     
         // Créer la VBox pour les signes
-        VBox vboxOperateur = new VBox(10); // Ajout d'un espacement entre les boutons
+        VBox vboxOperateur = new VBox(5); // Ajout d'un espacement entre les boutons
         vboxOperateur.getChildren().addAll(listButtonSignes);
         vboxOperateur.setPadding(new Insets(10, 0, 10, 0));
 
-         hboxBas.getChildren().addAll(gridPane , vboxOperateur);
+        hboxBas.setSpacing(5);// Espace horizontal entre les élements de la HBox
+        hboxBas.getChildren().addAll(gridPane , vboxOperateur);
+
     
         // Ajouter les éléments au conteneur principal
         fenetre.getChildren().addAll(vboxResultat , hboxBas);
 
     
         // Configurer la scène et le stage
-        Scene scene = new Scene(fenetre, 400, 400); // J'ai ajusté les dimensions pour plus d'espace
+        Scene scene = new Scene(fenetre, 300, 290); // J'ai ajusté les dimensions pour plus d'espace
         primaryStage.setScene(scene);
         primaryStage.setTitle("Calculatrice NPI");
         primaryStage.setResizable(false);
