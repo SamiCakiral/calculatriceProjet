@@ -42,7 +42,7 @@ public static CalculatorGUI gui;
 
     @Override
     public void change(String accu) {
-
+        
     }
 
     @Override
@@ -50,24 +50,44 @@ public static CalculatorGUI gui;
 
     }
 
-    public void addition() {
-        Controler.model.add();
+    public static void addition() {
+        model.add();
         updateView();
     }
 
-    public void soustraction() {
+    public static void soustraction() {
         model.sub();
         updateView();
     }
 
-    public void nombreAppuyee(String n) {
+    public static void multiplication() {
+        model.multiply();
+        updateView();
+    }
+
+    public static void division() {
+        model.divide();
+        updateView();
+    }
+
+    public static void nombreAppuyee(String n) {
         model.setAccu(n);
         updateView();
     }
 
-    private void updateView() {
+    public static void push() {
+        model.push();
+        updateView();
+    }
+
+    public static void negation()
+    {
+        model.opposite();
+        updateView();
+    }
+
+    private static void updateView() {
         gui.change(model.getAccu());
-        
     }
 
 }

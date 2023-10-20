@@ -1,145 +1,204 @@
 package calculatricenpi.View;
 
+import calculatricenpi.Controler.Controler;
+
 import javafx.application.Application;
-import javafx.geometry.Pos ;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Text;
-import javafx.scene.layout.HBox;
-public class CalculatorGUI extends Application implements CalculatorGUIInterface {
 
+public class CalculatorGUI extends Application implements CalculatorGUIInterface {
+    Label [] labelResultats;
+    String displayString = "";
     @Override
     public void start(Stage primaryStage) {
         // Conteneur principal
-        VBox fenetre = new VBox(); // VBox principale qui va representer la fenêtre et qui va contenir la HBox et la VBox
-        fenetre.setStyle("-fx-background-color: gray;");
-        VBox vboxResultat = new VBox(); // VBox qui va contenir les 5 HBox qui affichent les résulats
-        Label label = new Label("52");
-        Label label1 = new Label("40");
-        Label label2 = new Label("700");
-        Label label3 = new Label("800");
-        Label label4 = new Label("900");
-        HBox hbox1 = new HBox(label);
-        hbox1.setAlignment(Pos.CENTER_RIGHT);
-        hbox1.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
-        HBox hbox2 = new HBox(label1);
-        hbox2.setAlignment(Pos.CENTER_RIGHT);
-        hbox2.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
-        HBox hbox3 = new HBox(label2);
-        hbox3.setAlignment(Pos.CENTER_RIGHT);
-        hbox3.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
-        HBox hbox4 = new HBox(label3);
-        hbox4.setAlignment(Pos.CENTER_RIGHT);
-        hbox4.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
-        HBox hbox5 = new HBox(label4);
-        hbox5.setAlignment(Pos.CENTER_RIGHT);
-        hbox5.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
 
-        HBox hboxBas = new HBox(); // HBox qui contient la GridPane de Button et la VBox des opérateurs
+        VBox fenetre = initFenetre();
+  
 
-       
+        Label[] labelResultats = { new Label("1"), new Label("2"), new Label("3"), new Label("4"), new Label("5") };
+        // Sami : J'ai remplacé la définition des labels un par un par une liste de
+        // label vide, qu'on poura par la suite traiter en tant que liste
+        // Ca sera plus simple pour la manipulation de chaque label par la suite
 
+        VBox vboxResultat = initVboxResultats(labelResultats); // VBox qui va contenir les 5 labels qui affichent les résulats
+        // on envoie la liste de label vide à la fonction initVboxResultats, qui va les placer et les linker avec le model
 
-        vboxResultat.setSpacing(3);
-        vboxResultat.getChildren().addAll(hbox1,hbox2,hbox3,hbox4, hbox5);
-    
         // Initialiser les boutons des chiffres
-        Button[] listButtonChiffres = new Button[12];
-        for (int i = 0; i <= 9; i++) { // Seulement 10 boutons pour les chiffres 0-9
-            listButtonChiffres[i] = new Button(String.valueOf(i));
-        }
-        
-        listButtonChiffres[10] = new Button(","); // Pour la virgule décimale
-        listButtonChiffres[11] = new Button("+/-"); // Pour la remise à zéro
-        listButtonChiffres[11].setStyle("-fx-background-color :gray ; -fx-border-color : black ; -fx-border-width : 1px;");
-        
-    
+        Button[] listButtonChiffres = initBoutonsChiffres();
+
         // Initialiser les boutons des signes
-        Button[] listButtonSignes = new Button[5];
-        String [] signes = {"+", "-", "*", "/", "<>"};
-        for (int i = 0; i < 5; i++) {
-            listButtonSignes[i] = new Button(signes[i]);
-        }
-        
+        Button[] listButtonSignes = initBoutonsSignes();
+
         // Créer la grille pour les chiffres
-        GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(10, 10, 10, 10));
-        gridPane.setHgap(5);
-        gridPane.setVgap(5);
-       
-        int buttonIndex = 0;
+        GridPane gridPane = initBoutons(listButtonChiffres, listButtonSignes);
 
+        initActionListener(listButtonChiffres, listButtonSignes);
 
-        gridPane.add(listButtonChiffres[7],0,0);
-        gridPane.add(listButtonChiffres[8],1,0);
-        gridPane.add(listButtonChiffres[9],2,0);
-        gridPane.add(listButtonChiffres[4],0,1);
-        gridPane.add(listButtonChiffres[5],1,1);
-        gridPane.add(listButtonChiffres[6],2,1);
-        gridPane.add(listButtonChiffres[1],0,2);
-        gridPane.add(listButtonChiffres[2],1,2);
-        gridPane.add(listButtonChiffres[3],2,2);
-        gridPane.add(listButtonChiffres[0],0,3);
-        gridPane.add(listButtonChiffres[10],1,3);
-        gridPane.add(listButtonChiffres[11],2,3);
-        
-       
-            
-        
-    
-        // Créer la VBox pour les signes
-        VBox vboxOperateur = new VBox(5); // Ajout d'un espacement entre les boutons
-        vboxOperateur.getChildren().addAll(listButtonSignes);
-        vboxOperateur.setPadding(new Insets(10, 0, 10, 0));
-
-        hboxBas.setSpacing(5);// Espace horizontal entre les élements de la HBox
-        hboxBas.getChildren().addAll(gridPane , vboxOperateur);
-
-    
         // Ajouter les éléments au conteneur principal
-        fenetre.getChildren().addAll(vboxResultat , hboxBas);
+        fenetre.getChildren().addAll(vboxResultat, gridPane);
 
-    
         // Configurer la scène et le stage
-        Scene scene = new Scene(fenetre, 300, 290); // J'ai ajusté les dimensions pour plus d'espace
+        Scene scene = new Scene(fenetre);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Calculatrice NPI");
         primaryStage.setResizable(false);
         primaryStage.show();
     }
-    
 
-    public  void startGui(String[] args) {
+    public void initActionListener(Button[] listButtonChiffres, Button[] listButtonSignes) {
+        for (int i = 0; i < listButtonChiffres.length; i++) {
+            int finalI = i; // definie finalI pour pouvoir l'utiliser dans le lambda (sinon on a une erreur : variable i is accessed from within inner class, needs to be final or effectively final)
+            listButtonChiffres[i].setOnAction(e -> {
+                Controler.nombreAppuyee(listButtonChiffres[finalI].getText());
+            });// pour chaque bouton : quand on clique dessus, on appelle la fonction change avec le chiffre correspondant
+        }
+
+        listButtonSignes[0  ].setOnAction(e -> {
+            Controler.addition();
+        });
+        listButtonSignes[1  ].setOnAction(e -> {
+            Controler.soustraction();
+        });
+        listButtonSignes[2  ].setOnAction(e -> {
+            Controler.multiplication();
+        });
+        listButtonSignes[3  ].setOnAction(e -> {
+            Controler.division();
+        });
+        listButtonSignes[4  ].setOnAction(e -> {
+            Controler.negation();
+        });
+        listButtonSignes[5  ].setOnAction(e -> {
+            Controler.push();
+        });
+
+        
+    }
+
+    public Button [] initBoutonsChiffres(){
+        Button [] listButtonChiffres = new Button[12];
+        for (int i = 0; i <= 9; i++) { // Seulement 10 boutons pour les chiffres 0-9
+           
+            listButtonChiffres[i] = new Button(String.valueOf(i));
+            listButtonChiffres[i].setMinSize(50, 50); // Taille minimale des boutons
+             // pour chaque bouton : quand on clique dessus, on appelle la fonction change avec le chiffre correspondant
+        }
+
+        listButtonChiffres[10] = new Button(","); // Pour la virgule décimale
+        listButtonChiffres[10].setMinSize(50, 50);
+        listButtonChiffres[11] = new Button("+/-"); // Pour la remise à zéro
+        listButtonChiffres[11].setMinSize(50, 50);
+        return listButtonChiffres;
+    }
+
+    public Button [] initBoutonsSignes(){
+        Button[] listButtonSignes = new Button[5];
+        String[] signes = { "+", "-", "*", "/", "<>" };
+        for (int i = 0; i < 5; i++) {
+            listButtonSignes[i] = new Button(signes[i]);
+            listButtonSignes[i].setMinSize(50, 50); // Taille minimale des boutons
+        }
+        listButtonSignes[4].setMinSize(180, 50);
+        listButtonSignes[4].setMaxWidth(Double.MAX_VALUE); // Le bouton prendra toute la largeur disponible
+
+        return listButtonSignes;
+    }
+    public VBox initVboxResultats(Label [] labelResultats) {
+        VBox vboxResultat = new VBox(5); // VBox qui va contenir les 5 HBox qui affichent les résulats
+        vboxResultat.setPadding(new Insets(10, 10, 10, 10));
+        vboxResultat.setAlignment(Pos.CENTER); // Aligner les résultats à droite
+
+        for (Label labelResult : labelResultats) {
+            VBox.setMargin(labelResult, new Insets(0, 0, 0, 0));
+            labelResult.setAlignment(Pos.CENTER_RIGHT);
+            labelResult.setMinWidth(230); // Assure une largeur minimale pour les labels
+            labelResult.setPadding(new Insets(5, 15, 5, 10)); // Espacement interne pour chaque label
+            labelResult.setStyle("-fx-border-color: black; -fx-background-color: white;"); // Bordure et couleur de fond
+                                                                                           // pour chaque label
+            vboxResultat.getChildren().add(labelResult);
+        } // On peut déja tous les ajouter un par un a la vBox au lieux de faire une hBox
+          // par label puis de les ajouter un par un ca revien au même mais c'est plus lisible
+
+        vboxResultat.setSpacing(3);
+        return vboxResultat;
+    }
+    public VBox initFenetre() {
+        VBox fenetre = new VBox(5); // VBox principale qui va representer la fenêtre et qui va contenir la HBox et
+                                    // la VBox
+        fenetre.setPadding(new Insets(10)); // Marge globale pour l'interface
+
+        return fenetre;
+    }
+
+    public GridPane initBoutons(Button[] listButtonChiffres, Button[] listButtonSignes) {
+
+        // Créer la grille pour les chiffres
+        GridPane gridPaneBoutons = new GridPane();
+        gridPaneBoutons.setPadding(new Insets(10, 10, 10, 10));
+        gridPaneBoutons.setHgap(5);
+        gridPaneBoutons.setVgap(5);
+
+        int[][] layoutChiffres = {
+                { 7, 8, 9 },
+                { 4, 5, 6 },
+                { 1, 2, 3 }
+        };
+        // On fait une liste avec un layout qu'on va suivre, c'est mieux que je placer
+        // tout les boutons a la main
+        for (int row = 0; row < layoutChiffres.length; row++) {
+            for (int col = 0; col < layoutChiffres[row].length; col++) {
+                int buttonIndex = layoutChiffres[row][col];
+                gridPaneBoutons.add(listButtonChiffres[buttonIndex], col, row);
+            }
+
+            gridPaneBoutons.add(listButtonSignes[row], 4, row); // Ajout du signe après les chiffres
+        }
+
+        // Ajout de la dernière ligne qui est spécifique
+        gridPaneBoutons.add(listButtonChiffres[10], 0, 3);
+        gridPaneBoutons.add(listButtonChiffres[0], 1, 3);
+        gridPaneBoutons.add(listButtonChiffres[11], 2, 3);
+        gridPaneBoutons.add(listButtonSignes[3], 4, 3);
+        gridPaneBoutons.add(listButtonSignes[4], 0, 4, 5, 1); // Commence à la colonne 0, ligne 4, s'étend sur 4
+                                                              // colonnes et 1 ligne
+
+        return gridPaneBoutons;
+    }
+
+    public void push(){
+        Controler.push();
+    }
+
+    public void startGui(String[] args) {
         launch(args);
     }
 
-
     @Override
     public void affiche() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'affiche'");
+        for (int i = 0; i < 3; i++) {
+            String textPrecedent = labelResultats[i].getText();
+            labelResultats[i+1].setText(textPrecedent);
+        }
+        labelResultats[0].setText(displayString);
     }
-
-
+    
     @Override
     public void change(String accu) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'change'");
+        displayString = accu;
+        affiche();
     }
-
 
     @Override
     public void change(double[] stackData) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'change'");
+        // je sais pas ce que doit faire cette fonction
+        System.out.println("jsp");
     }
+
 }
