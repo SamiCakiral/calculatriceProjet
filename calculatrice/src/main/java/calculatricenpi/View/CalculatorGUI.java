@@ -15,7 +15,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.scene.layout.HBox;
-public class CalculatorGUI extends Application {
+public class CalculatorGUI extends Application implements CalculatorGUIInterface {
 
     @Override
     public void start(Stage primaryStage) {
@@ -120,5 +120,26 @@ public class CalculatorGUI extends Application {
 
     public  void startGui(String[] args) {
         launch(args);
+    }
+
+
+    @Override
+    public void affiche() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'affiche'");
+    }
+
+
+    @Override
+    public void change(String accu) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'change'");
+    }
+
+
+    @Override
+    public void change(double[] stackData) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'change'");
     }
 }
