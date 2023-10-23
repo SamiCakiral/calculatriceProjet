@@ -1,13 +1,18 @@
 package calculatricenpi.Model;
 import java.util.Stack ;
 
+
+import calculatricenpi.Controler.Controler;
+
 public class CalculatorModel implements CalculatorModelInterface{
 
     private String accu = "" ;
 	private Stack<Double> pile = new Stack<Double>() ;
+	Controler controler;
+
 
 	public void setAccu(String accu) {
-		this.accu +=accu;
+		this.accu += accu;
 	}
 	public String getAccu() {
 		return accu;
@@ -70,6 +75,14 @@ public class CalculatorModel implements CalculatorModelInterface{
 
 	public void clear() {
 		pile.clear();
+	}
+	public void setControler(Controler controler) {
+		this.controler = controler;
+	}
+	public double top() {
+		double top = pile.pop();
+		pile.push(top);
+		return top;
 	}
 	
 

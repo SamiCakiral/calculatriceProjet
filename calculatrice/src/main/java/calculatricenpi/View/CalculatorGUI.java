@@ -1,7 +1,9 @@
 package calculatricenpi.View;
 
-import calculatricenpi.Controler.Controler;
+import java.util.Stack;
 
+import calculatricenpi.Controler.Controler;
+import calculatricenpi.Model.CalculatorModel;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,16 +15,25 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 public class CalculatorGUI extends Application implements CalculatorGUIInterface {
-    Label [] labelResultats;
+    
+    private Label[] labelResultats;
     String displayString = "";
+  
+    
+    
     @Override
     public void start(Stage primaryStage) {
-        // Conteneur principal
+
+        CalculatorModel model = new CalculatorModel();
+        Controler controler = new Controler(model, this); // Utilisez "this" pour la vue
+        model.setControler(controler);
+
+         // Conteneur principal
 
         VBox fenetre = initFenetre();
   
 
-        Label[] labelResultats = { new Label("1"), new Label("2"), new Label("3"), new Label("4"), new Label("5") };
+        this.labelResultats = new Label[] { new Label(""), new Label(""), new Label(""), new Label(""), new Label("") };
         // Sami : J'ai remplacé la définition des labels un par un par une liste de
         // label vide, qu'on poura par la suite traiter en tant que liste
         // Ca sera plus simple pour la manipulation de chaque label par la suite
@@ -56,7 +67,9 @@ public class CalculatorGUI extends Application implements CalculatorGUIInterface
         for (int i = 0; i < listButtonChiffres.length; i++) {
             int finalI = i; // definie finalI pour pouvoir l'utiliser dans le lambda (sinon on a une erreur : variable i is accessed from within inner class, needs to be final or effectively final)
             listButtonChiffres[i].setOnAction(e -> {
-                Controler.nombreAppuyee(listButtonChiffres[finalI].getText());
+                String buttonValue = listButtonChiffres[finalI].getText();
+                Controler.nombreAppuyee(buttonValue);
+                System.out.println(buttonValue); // Affiche la valeur du bouton dans la console
             });// pour chaque bouton : quand on clique dessus, on appelle la fonction change avec le chiffre correspondant
         }
 
@@ -72,11 +85,11 @@ public class CalculatorGUI extends Application implements CalculatorGUIInterface
         listButtonSignes[3  ].setOnAction(e -> {
             Controler.division();
         });
-        listButtonSignes[4  ].setOnAction(e -> {
-            Controler.negation();
-        });
-        listButtonSignes[5  ].setOnAction(e -> {
+        listButtonSignes[4 ].setOnAction(e -> {
             Controler.push();
+        });
+        listButtonChiffres[ 11 ].setOnAction(e -> {
+            Controler.negation();
         });
 
         
@@ -172,33 +185,42 @@ public class CalculatorGUI extends Application implements CalculatorGUIInterface
         return gridPaneBoutons;
     }
 
+   
     public void push(){
         Controler.push();
     }
 
     public void startGui(String[] args) {
         launch(args);
+
+    
     }
+
+    
 
     @Override
     public void affiche() {
-        for (int i = 0; i < 3; i++) {
-            String textPrecedent = labelResultats[i].getText();
-            labelResultats[i+1].setText(textPrecedent);
-        }
-        labelResultats[0].setText(displayString);
-    }
-    
+        
+        /*labelResultats[4].setText(displayString);
+
+        labelResultats[3].setText(String.valueOf());
+    */}
+
+        
     @Override
     public void change(String accu) {
-        displayString = accu;
-        affiche();
+        displayString = accu ;
+        labelResultats[4].setText(accu);
     }
 
     @Override
     public void change(double[] stackData) {
-        // je sais pas ce que doit faire cette fonction
-        System.out.println("jsp");
+        for (int i = 3;i<0;i--){
+            labelResultats[i].setText(String.valueOf(stackData[i]));
+        }
+       
+        
     }
+
 
 }
