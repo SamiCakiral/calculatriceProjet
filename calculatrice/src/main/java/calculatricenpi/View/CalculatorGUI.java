@@ -1,7 +1,8 @@
 package calculatricenpi.View;
 
-import calculatricenpi.Controler.Controler;
 
+import calculatricenpi.Controler.Controler;
+import calculatricenpi.Model.CalculatorModel;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,16 +14,27 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 public class CalculatorGUI extends Application implements CalculatorGUIInterface {
-    Label [] labelResultats;
+    
+    private Label[] labelResultats;
     String displayString = "";
+    
+    
     @Override
     public void start(Stage primaryStage) {
-        // Conteneur principal
+
+        CalculatorModel model = new CalculatorModel();
+        Controler controler = new Controler(model, this); // Utilisez "this" pour la vue
+        model.setControler(controler);
+
+         // Conteneur principal
 
         VBox fenetre = initFenetre();
-  
+        Controler.stackData = new double[5];
+        for (int i = 0; i < 5; i++){
+            Controler.stackData[i] = 0;
+        }
 
-        Label[] labelResultats = { new Label("1"), new Label("2"), new Label("3"), new Label("4"), new Label("5") };
+        this.labelResultats = new Label[] { new Label(""), new Label(""), new Label(""), new Label(""), new Label("") };
         // Sami : J'ai remplacé la définition des labels un par un par une liste de
         // label vide, qu'on poura par la suite traiter en tant que liste
         // Ca sera plus simple pour la manipulation de chaque label par la suite
@@ -56,7 +68,9 @@ public class CalculatorGUI extends Application implements CalculatorGUIInterface
         for (int i = 0; i < listButtonChiffres.length; i++) {
             int finalI = i; // definie finalI pour pouvoir l'utiliser dans le lambda (sinon on a une erreur : variable i is accessed from within inner class, needs to be final or effectively final)
             listButtonChiffres[i].setOnAction(e -> {
-                Controler.nombreAppuyee(listButtonChiffres[finalI].getText());
+                String buttonValue = listButtonChiffres[finalI].getText();
+                Controler.nombreAppuyee(buttonValue);
+                System.out.println(buttonValue); // Affiche la valeur du bouton dans la console
             });// pour chaque bouton : quand on clique dessus, on appelle la fonction change avec le chiffre correspondant
         }
 
@@ -72,13 +86,18 @@ public class CalculatorGUI extends Application implements CalculatorGUIInterface
         listButtonSignes[3  ].setOnAction(e -> {
             Controler.division();
         });
-        listButtonSignes[4  ].setOnAction(e -> {
+        listButtonSignes[4 ].setOnAction(e -> {
+            Controler.push();
+        });
+        listButtonChiffres[ 11 ].setOnAction(e -> {
             Controler.negation();
         });
         listButtonSignes[5  ].setOnAction(e -> {
-            Controler.push();
+            Controler.clear();
         });
-
+        listButtonSignes[6  ].setOnAction(e -> {
+            Controler.swap();
+        });
         
     }
 
@@ -99,13 +118,13 @@ public class CalculatorGUI extends Application implements CalculatorGUIInterface
     }
 
     public Button [] initBoutonsSignes(){
-        Button[] listButtonSignes = new Button[5];
-        String[] signes = { "+", "-", "*", "/", "<>" };
-        for (int i = 0; i < 5; i++) {
+        Button[] listButtonSignes = new Button[7];
+        String[] signes = { "+", "-", "*", "/", "<>", "C","⇅"};
+        for (int i = 0; i < 7; i++) {
             listButtonSignes[i] = new Button(signes[i]);
             listButtonSignes[i].setMinSize(50, 50); // Taille minimale des boutons
         }
-        listButtonSignes[4].setMinSize(180, 50);
+        listButtonSignes[4].setMinSize(100, 50);
         listButtonSignes[4].setMaxWidth(Double.MAX_VALUE); // Le bouton prendra toute la largeur disponible
 
         return listButtonSignes;
@@ -157,7 +176,6 @@ public class CalculatorGUI extends Application implements CalculatorGUIInterface
                 int buttonIndex = layoutChiffres[row][col];
                 gridPaneBoutons.add(listButtonChiffres[buttonIndex], col, row);
             }
-
             gridPaneBoutons.add(listButtonSignes[row], 4, row); // Ajout du signe après les chiffres
         }
 
@@ -166,39 +184,44 @@ public class CalculatorGUI extends Application implements CalculatorGUIInterface
         gridPaneBoutons.add(listButtonChiffres[0], 1, 3);
         gridPaneBoutons.add(listButtonChiffres[11], 2, 3);
         gridPaneBoutons.add(listButtonSignes[3], 4, 3);
-        gridPaneBoutons.add(listButtonSignes[4], 0, 4, 5, 1); // Commence à la colonne 0, ligne 4, s'étend sur 4
+        gridPaneBoutons.add(listButtonSignes[4], 0, 5, 2, 1); // Commence à la colonne 0, ligne 4, s'étend sur 4
                                                               // colonnes et 1 ligne
+        gridPaneBoutons.add( listButtonSignes[5], 4, 5); // Ajout du bouton C
+        gridPaneBoutons.add( listButtonSignes[6], 2, 5); // Ajout du bouton Swap
 
         return gridPaneBoutons;
     }
 
-    public void push(){
-        Controler.push();
-    }
-
     public void startGui(String[] args) {
         launch(args);
+
+    
     }
 
     @Override
     public void affiche() {
-        for (int i = 0; i < 3; i++) {
-            String textPrecedent = labelResultats[i].getText();
-            labelResultats[i+1].setText(textPrecedent);
-        }
-        labelResultats[0].setText(displayString);
-    }
-    
+        
+        /*labelResultats[4].setText(displayString);
+
+        labelResultats[3].setText(String.valueOf());
+    */}
+
+        
     @Override
     public void change(String accu) {
-        displayString = accu;
-        affiche();
+        displayString = accu ;
+        labelResultats[4].setText(accu);
     }
 
     @Override
     public void change(double[] stackData) {
-        // je sais pas ce que doit faire cette fonction
-        System.out.println("jsp");
+        
+        for (int i = 3;i>=0;i--){
+            labelResultats[i].setText(String.valueOf(stackData[i]));
+        }
+       
+        
     }
+
 
 }
